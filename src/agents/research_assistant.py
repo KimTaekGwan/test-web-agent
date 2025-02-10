@@ -5,7 +5,11 @@ from langchain_community.tools import DuckDuckGoSearchResults, OpenWeatherMapQue
 from langchain_community.utilities import OpenWeatherMapAPIWrapper
 from langchain_core.language_models.chat_models import BaseChatModel
 from langchain_core.messages import AIMessage, SystemMessage
-from langchain_core.runnables import RunnableConfig, RunnableLambda, RunnableSerializable
+from langchain_core.runnables import (
+    RunnableConfig,
+    RunnableLambda,
+    RunnableSerializable,
+)
 from langgraph.checkpoint.memory import MemorySaver
 from langgraph.graph import END, MessagesState, StateGraph
 from langgraph.managed import RemainingSteps
@@ -62,9 +66,7 @@ def wrap_model(model: BaseChatModel) -> RunnableSerializable[AgentState, AIMessa
 
 
 def format_safety_message(safety: LlamaGuardOutput) -> AIMessage:
-    content = (
-        f"This conversation was flagged for unsafe content: {', '.join(safety.unsafe_categories)}"
-    )
+    content = f"This conversation was flagged for unsafe content: {', '.join(safety.unsafe_categories)}"
     return AIMessage(content=content)
 
 
@@ -77,7 +79,10 @@ async def acall_model(state: AgentState, config: RunnableConfig) -> AgentState:
     llama_guard = LlamaGuard()
     safety_output = await llama_guard.ainvoke("Agent", state["messages"] + [response])
     if safety_output.safety_assessment == SafetyAssessment.UNSAFE:
-        return {"messages": [format_safety_message(safety_output)], "safety": safety_output}
+        return {
+            "messages": [format_safety_message(safety_output)],
+            "safety": safety_output,
+        }
 
     if state["remaining_steps"] < 2 and response.tool_calls:
         return {
@@ -143,6 +148,8 @@ def pending_tool_calls(state: AgentState) -> Literal["tools", "done"]:
     return "done"
 
 
-agent.add_conditional_edges("model", pending_tool_calls, {"tools": "tools", "done": END})
+agent.add_conditional_edges(
+    "model", pending_tool_calls, {"tools": "tools", "done": END}
+)
 
 research_assistant = agent.compile(checkpointer=MemorySaver())

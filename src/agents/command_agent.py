@@ -1,6 +1,8 @@
 import random
+import operator
 from typing import Literal
-
+from typing_extensions import Annotated
+from typing import TypedDict
 from langchain_core.messages import AIMessage
 from langgraph.graph import START, MessagesState, StateGraph
 from langgraph.types import Command
@@ -11,6 +13,8 @@ class AgentState(MessagesState, total=False):
 
     documentation: https://typing.readthedocs.io/en/latest/spec/typeddict.html#totality
     """
+
+    foo: Annotated[str, operator.add]
 
 
 # Define the nodes
@@ -28,7 +32,7 @@ def node_a(state: AgentState) -> Command[Literal["node_b", "node_c"]]:
     # note how Command allows you to BOTH update the graph state AND route to the next node
     return Command(
         # this is the state update
-        update={"messages": [AIMessage(content=f"Hello {value}")]},
+        update={"messages": [AIMessage(content=f"Hello {value}")], "foo": value},
         # this is a replacement for an edge
         goto=goto,
     )
@@ -36,12 +40,12 @@ def node_a(state: AgentState) -> Command[Literal["node_b", "node_c"]]:
 
 def node_b(state: AgentState):
     print("Called B")
-    return {"messages": [AIMessage(content="Hello B")]}
+    return {"messages": [AIMessage(content="Hello B")], "foo": "b"}
 
 
 def node_c(state: AgentState):
     print("Called C")
-    return {"messages": [AIMessage(content="Hello C")]}
+    return {"messages": [AIMessage(content="Hello C")], "foo": "c"}
 
 
 builder = StateGraph(AgentState)

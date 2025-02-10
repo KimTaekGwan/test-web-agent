@@ -40,6 +40,8 @@ dependencies = [
     "streamlit ~=1.40.1",
     "tiktoken >=0.8.0", # python 3.13 support
     "uvicorn ~=0.32.1",
+    "scalar-fastapi>=1.0.3",
+    "langgraph-cli[inmem]>=0.1.71",
 ]
 
 [dependency-groups]
@@ -50,6 +52,7 @@ dev = [
     "pytest-env",
     "pytest-asyncio",
     "ruff",
+    "langgraph-cli[inmem]>=0.1.71",
 ]
 
 # Group for the minimal dependencies to run just the client and Streamlit app.
@@ -61,6 +64,22 @@ client = [
     "python-dotenv ~=1.0.1",
     "streamlit~=1.40.1",
 ]
+
+[build-system]
+requires = ["setuptools>=73.0.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = ["agents", "schema", "core"]
+
+[tool.setuptools.package-dir]
+"agents" = "src/agents"
+"schema" = "src/schema"
+"core" = "src/core"
+
+[tool.setuptools.package-data]
+"*" = ["py.typed"]
+
 
 [tool.ruff]
 line-length = 100

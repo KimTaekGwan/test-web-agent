@@ -1,8 +1,11 @@
 {
-    "python_version": "3.12",
-    "dependencies": ["."],
-    "graphs": {
-        "research_assistant": "./src/agents/research_assistant.py:research_assistant"
-    },
-    "env": "./.env"
+  "python_version": "3.12",
+  "dependencies": ["."],
+  "graphs": {
+    "research_assistant": "./src/agents/research_assistant.py:research_assistant",
+    "command_agent": "./src/agents/command_agent.py:command_agent",
+    "chatbot": "./src/agents/chatbot.py:chatbot",
+    "bg_task_agent": "./src/agents/bg_task_agent/bg_task_agent.py:bg_task_agent"
+  },
+  "env": "./.env"
 }
