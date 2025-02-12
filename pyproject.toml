@@ -71,7 +71,7 @@ requires = ["setuptools>=73.0.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [tool.setuptools]
-packages = ["agents", "schema", "core", "shared", "docs"]
+packages = ["agents", "schema", "core", "shared", "docs", "sample_agent"]
 
 [tool.setuptools.package-dir]
 "agents" = "src/agents"
@@ -79,6 +79,7 @@ packages = ["agents", "schema", "core", "shared", "docs"]
 "core" = "src/core"
 "shared" = "src/shared"
 "docs" = "docs"
+"sample_agent" = "src/agents/sample_agent"
 
 [tool.setuptools.package-data]
 "*" = ["py.typed"]

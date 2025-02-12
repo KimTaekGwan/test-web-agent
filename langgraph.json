@@ -6,6 +6,7 @@
     "command_agent": "./src/agents/command_agent.py:command_agent",
     "chatbot": "./src/agents/chatbot.py:chatbot",
     "bg_task_agent": "./src/agents/bg_task_agent/bg_task_agent.py:bg_task_agent",
+    "sample_agent": "./src/agents/sample_agent/agents.py:sample_agent",
     "index_graph": "./src/agents/index_graph/graph.py:graph"
   },
   "env": "./.env"
